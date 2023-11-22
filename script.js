@@ -69,14 +69,10 @@ function calculateProjection() {
     } else {
         document.getElementById('firstExchangeRate').innerHTML = "Please enter valid values.";
     }
-}
 
-    
-
-    
-    // Show the flash message after calculating savings
+    // Show the flash message after calculating the projected loss
     showFlashMessageProjection();
-
+}
 
 function showFlashMessage() {
     var flashMessage = document.getElementById('flashMessage');
@@ -92,7 +88,6 @@ function closeFlashMessage() {
     var flashMessage = document.getElementById('flashMessage');
     flashMessage.style.display = 'none';
 }
-
 
 // Function to get and update the visitor count
 function updateVisitorCount() {
