@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savings Comparison</title>
+    <!-- Link to Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+          
+        <h1 class="mt-4">Savings Comparison</h1>
+
+        <section class="mt-4">
+            <h2>Introduction</h2>
+            <p>
+                In this comparison, we explore the potential savings by borrowing money from Taiwan, where the interest rate is currently 2.5%, and investing it in Europe, where the interest rate is 4.5%. Please adjust the number based on your real situation.
+            </p>
+        </section>
+
+        <section class="mt-4">
+            <h2>Savings Calculation</h2>
+            <form id="savingsForm">
+                <div class="form-group">
+                    <label for="interestTaiwan">Enter your interest rate in Taiwan (%):</label>
+                    <input type="number" class="form-control" id="interestTaiwan" name="interestTaiwan" min="0" step="0.1" value="2.5" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="interestEurope">Enter the interest rate in Europe (%):</label>
+                    <input type="number" class="form-control" id="interestEurope" name="interestEurope" min="0" step="0.1" value="4.5" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="loanAmountEuros">Enter the total loans in Euros:</label>
+                    <input type="number" class="form-control" id="loanAmountEuros" name="loanAmountEuros" min="0" step="1" value = "210000", required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mortgageYears">Enter the number of years for the mortgage:</label>
+                    <input type="number" class="form-control" id="mortgageYears" name="mortgageYears" min="1" step="1" value = "20", required>
+                </div>
+
+                <div class="form-group">
+                    <label for="wireFee">Enter the wiring fees in Euros:</label>
+                    <input type="number" class="form-control" id="wireFee" name="wireFee" min="1" step="1" value = "30" required>
+                </div>
+
+                <button type="button" class="btn btn-primary" onclick="calculateSavings()">Calculate Savings</button>
+            </form>
+            <p id="savingsResult" class="mt-3"></p>
+        </section>
+
+        <section class="mt-4">
+            <h2>Payment</h2>
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Type</th>
+                        <th scope="col">Your payments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Monthly</td>
+                        <td id="monthlyPayment"></td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td id="totalPayment"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Flash message div -->
+        <div id="flashMessage" class="flash-message">
+            <p>Important: This information is for illustrative purposes only. Consult with a financial advisor before making investment decisions.</p>
+            <span class="close-btn" onclick="closeFlashMessage()">×</span>
+        </div>
+
+        <section class="mt-4">
+            <h2>Currency exchange rate and potential loss projection </h2>
+            <button type="button" class="btn btn-primary" onclick="calculateProjection()">Loss projections</button>
+            <section class="mt-4">
+                <h2>Payment</h2>
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Month</th>
+                            <th scope="col">Projected currency exchange rate </th>
+                            <th scope="col">Projected payments in NTD</th>
+                            <th scope="col">Projected loss/gain in NTD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td id="firstExchangeRate"></td>
+                            <td id="firstProjectedPayment"></td>
+                            <td id="firstProjectedLoss"></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td id="secondExchangeRate"></td>
+                            <td id="secondProjectedPayment"></td>
+                            <td id="secondProjectedLoss"></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td id="thirdExchangeRate"></td>
+                            <td id="thirdProjectedPayment"></td>
+                            <td id="thirdProjectedLoss"></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td id="fourthExchangeRate"></td>
+                            <td id="fourthProjectedPayment"></td>
+                            <td id="fourthProjectedLoss"></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td id="fifthExchangeRate"></td>
+                            <td id="fifthProjectedPayment"></td>
+                            <td id="fifthProjectedLoss"></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td id="sixthExchangeRate"></td>
+                            <td id="sixthProjectedPayment"></td>
+                            <td id="sixthProjectedLoss"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            <div id="flashMessageProjection" class="flash-message">
+                <p>Important: This projection is based on the historical data from the past year. The latest update is at 2023-11-22. The currency exchange rate (Eur -> NTD) is set as 34.66. This is for illustrative purposes only. Consult with a financial advisor before making investment decisions.</p>
+                <span class="close-btn" onclick="closeFlashMessage()">×</span>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Link to Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <script src="script.js"></script> <!-- Assuming your JavaScript is in script.js -->
+    <!-- Add this inside the <body> tag, before the closing </body> tag -->
+    <div id="visitorCount" class="mt-4 alert alert-info">
+        Visitors: <span id="count" class="badge badge-light" style="font-size: 1.5em;">0</span>
+    </div>
+
+</body>
+</html>
