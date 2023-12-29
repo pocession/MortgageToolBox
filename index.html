@@ -28,12 +28,17 @@
             <form id="savingsForm">
                 <div class="form-group">
                     <label for="interestTaiwan">Enter your interest rate in Taiwan (%):</label>
-                    <input type="number" class="form-control" id="interestTaiwan" name="interestTaiwan" min="0" step="0.1" value="2.5" required>
+                    <input type="number" class="form-control" id="interestTaiwan" name="interestTaiwan" min="0" step="0.1" value="2.0" required>
                 </div>
 
                 <div class="form-group">
                     <label for="interestEurope">Enter the interest rate in Europe (%):</label>
-                    <input type="number" class="form-control" id="interestEurope" name="interestEurope" min="0" step="0.1" value="4.5" required>
+                    <input type="number" class="form-control" id="interestEurope" name="interestEurope" min="0" step="0.1" value="4.06" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="taxRateEurope">Enter the tax rate in Europe (%):</label>
+                    <input type="number" class="form-control" id="taxRateEurope" name="taxRatetEurope" min="0" step="0.1" value="36.93" required>
                 </div>
 
                 <div class="form-group">
@@ -53,7 +58,28 @@
 
                 <button type="button" class="btn btn-primary" onclick="calculateSavings()">Calculate Savings</button>
             </form>
-            <p id="savingsResult" class="mt-3"></p>
+        </section>
+
+        <section class="mt-4">
+            <h2>Savings</h2>
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Type</th>
+                        <th scope="col">Your savings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Monthly</td>
+                        <td id="monthlySaving"></td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td id="totalSaving"></td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
 
         <section class="mt-4">

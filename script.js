@@ -7,31 +7,37 @@ var currentExchangeRate = 34.66
 function calculateSavings() {
     var interestTaiwan = parseFloat(document.getElementById('interestTaiwan').value);
     var interestEurope = parseFloat(document.getElementById('interestEurope').value);
+    var taxRateEurope = parseFloat(document.getElementById('taxRateEurope').value);
+    var interestEuropeAdjustedWithTax = interestEurope * (100 - taxRateEurope) * 0.01;
     var loanAmountEuros = parseFloat(document.getElementById('loanAmountEuros').value);
     var mortgageYears = parseInt(document.getElementById('mortgageYears').value);
     var totalMonth = mortgageYears * 12;
-    var monthlyInterestRateTaiwan = interestTaiwan / 100 / 12
-    var monthlyInterestRateEuro = interestEurope / 100 / 12
+    var monthlyInterestRateTaiwan = interestTaiwan / 100 / 12;
+    var monthlyInterestRateEuro = interestEuropeAdjustedWithTax / 100 / 12;
     var wireFee = parseInt(document.getElementById('wireFee').value);
 
     if (!isNaN(interestTaiwan) && !isNaN(interestEurope) && !isNaN(loanAmountEuros) && !isNaN(mortgageYears)) {
 
 
-        // Calculate the total payment with Taiwanese interest rate 
+        // Calculate total payment with Taiwanese interest rate 
         var monthlyPaymentTaiwan = (loanAmountEuros * monthlyInterestRateTaiwan) / (1 - Math.pow(1 + monthlyInterestRateTaiwan, -totalMonth));
+        var totalPaymentTaiwan = monthlyPaymentTaiwan * totalMonth;
+
 
         // Calculate the total payment with Europeann interest rate
         var monthlyPaymentEuro = (loanAmountEuros * monthlyInterestRateEuro) / (1 - Math.pow(1 + monthlyInterestRateEuro, -totalMonth));
-        var totalPaymentEuro = monthlyPaymentEuro * totalMonth
+        var totalPaymentEuro = monthlyPaymentEuro * totalMonth;
+
 
         var monthlySavings = (monthlyPaymentEuro - monthlyPaymentTaiwan - wireFee).toFixed(2)
         var totalSavings = (monthlySavings * totalMonth).toFixed(2)
         var monthlyPaymentEuroPlusWiring = (monthlyPaymentEuro + wireFee).toFixed(2)
         var totalPaymentEuroPlusWiringFee = (totalPaymentEuro + wireFee * totalMonth).toFixed(2)
 
-        document.getElementById('savingsResult').innerHTML = "Potential Monthly Savings: " + monthlySavings + " Euros.\n" + "Potential Total Savings: " + totalSavings + " Euros.";
-        document.getElementById('monthlyPayment').innerHTML = monthlyPaymentEuroPlusWiring + " Euro"
-        document.getElementById('totalPayment').innerHTML = totalPaymentEuroPlusWiringFee + " Euro"
+        document.getElementById('monthlySaving').innerHTML = monthlySavings + "Euro";
+        document.getElementById('totalSaving').innerHTML = totalSavings + "Euro";
+        document.getElementById('monthlyPayment').innerHTML = monthlyPaymentEuroPlusWiring + " Euro";
+        document.getElementById('totalPayment').innerHTML = totalPaymentEuroPlusWiringFee + " Euro";
     } else {
         document.getElementById('savingsResult').innerHTML = "Please enter valid values.";
     }
@@ -44,13 +50,15 @@ function calculateProjection() {
 
     var interestTaiwan = parseFloat(document.getElementById('interestTaiwan').value);
     var interestEurope = parseFloat(document.getElementById('interestEurope').value);
+    var taxRateEurope = parseFloat(document.getElementById('taxRateEurope').value);
+    var interestEuropeAdjustedWithTax = interestEurope * (100 - taxRateEurope) * 0.01;
     var loanAmountEuros = parseFloat(document.getElementById('loanAmountEuros').value);
     var mortgageYears = parseInt(document.getElementById('mortgageYears').value);
     var totalMonth = mortgageYears * 12;
     var monthlyInterestRateTaiwan = interestTaiwan / 100 / 12
-    var monthlyInterestRateEuro = interestEurope / 100 / 12
+    var monthlyInterestRateEuro = interestEuropeAdjustedWithTax / 100 / 12
     var wireFee = parseInt(document.getElementById('wireFee').value);
-    
+
     if (!isNaN(interestTaiwan) && !isNaN(interestEurope) && !isNaN(loanAmountEuros) && !isNaN(mortgageYears)) {
         var monthlyPaymentEuro = (loanAmountEuros * monthlyInterestRateEuro) / (1 - Math.pow(1 + monthlyInterestRateEuro, -totalMonth));
         var monthlyPaymentEuroPlusWiring = (monthlyPaymentEuro + wireFee).toFixed(2);
