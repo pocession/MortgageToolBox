@@ -8,25 +8,16 @@ function getInputValue(id) {
     return parseFloat(document.getElementById(id).value);
 }
 
-// Initiate an object to host variables
+// Initiate an object to host element IDs
 const ELEMENT_ID = {
-    interestTaiwan: getInputValue('interestTaiwan'),
-    interestEurope: getInputValue('interestEurope'),
-    taxRateEurope: getInputValue('taxRateEurope'),
-    interestEuropeAdjustedWithTax: 0,
-    loanAmountEuros: getInputValue('loanAmountEuros'),
-    mortgageYears: getInputValue('mortgageYears'),
-    totalMonth: 0,
-    monthlyInterestRateTaiwan: 0,
-    monthlyInterestRateEuro: 0,
-    wireFee: getInputValue('wireFee'),
+    interestTaiwan: 'interestTaiwan',
+    interestEurope: 'interestEurope',
+    taxRateEurope: 'taxRateEurope',
+    interestEuropeAdjustedWithTax: 'interestEuropeAdjustedWithTax:',
+    loanAmountEuros:'loanAmountEuros',
+    mortgageYears: 'mortgageYears',
+    wireFee: 'wireFee',
 }
-
-// Update some variables
-ELEMENT_ID.interestEuropeAdjustedWithTax = ELEMENT_ID['interestEurope'] * (100 - ELEMENT_ID['taxRateEurope']) * 0.01;
-ELEMENT_ID.totalMonth = ELEMENT_ID['mortgageYears'] * 12;
-ELEMENT_ID.monthlyInterestRateTaiwan = ELEMENT_ID['interestTaiwan'] / 100 / 12;
-ELEMENT_ID.monthlyInterestRateEuro = ELEMENT_ID['interestEuropeAdjustedWithTax'] / 100 / 12;
 
 // Function to calculate monthly and total payment
 function calculateMonthlyAndTotalPayment(loanAmount, monthlyInterestRate, totalMonth) {
@@ -37,18 +28,19 @@ function calculateMonthlyAndTotalPayment(loanAmount, monthlyInterestRate, totalM
 
 function calculateSavings() {
     // Get input values
-    const interestTaiwan = ELEMENT_ID['interestTaiwan'];
-    const interestEurope = ELEMENT_ID['interestEurope'];
-    const loanAmountEuros = ELEMENT_ID['loanAmountEuros'];
-    const mortgageYears = ELEMENT_ID['mortgageYears'];
-    const totalMonth = ELEMENT_ID['totalMonth'];
-    const monthlyInterestRateTaiwan = ELEMENT_ID['monthlyInterestRateTaiwan']
-    const monthlyInterestRateEuro = ELEMENT_ID['monthlyInterestRateEuro']
-    const wireFee = ELEMENT_ID['wireFee']
+    const interestTaiwan = getInputValue(ELEMENT_ID['interestTaiwan']);
+    const interestEurope = getInputValue(ELEMENT_ID['interestEurope']);
+    const loanAmountEuros = getInputValue(ELEMENT_ID['loanAmountEuros']);
+    const mortgageYears = getInputValue(ELEMENT_ID['mortgageYears']);
+    const totalMonth = mortgageYears * 12;
+    const monthlyInterestRateTaiwan = interestTaiwan / 100 / 12;
+    const taxRateEurope = getInputValue(ELEMENT_ID['taxRateEurope']);
+    const interestEuropeAdjustedWithTax = interestEurope * (100 - taxRateEurope) * 0.01;
+    const monthlyInterestRateEuroAdjustedWithTax = interestEuropeAdjustedWithTax / 100 / 12;
+    const wireFee = getInputValue(ELEMENT_ID['wireFee']);
 
     if (!isNaN(interestTaiwan) && !isNaN(interestEurope) && !isNaN(loanAmountEuros) && !isNaN(mortgageYears)) {
-        console.log(ELEMENT_ID);
-
+    
         // Calculate total payment with Taiwanese interest rate
         const PaymentTaiwan = calculateMonthlyAndTotalPayment(
             loanAmountEuros,
@@ -59,7 +51,7 @@ function calculateSavings() {
         // Calculate total payment with European interest rate
         const PaymentEuro = calculateMonthlyAndTotalPayment(
             loanAmountEuros,
-            monthlyInterestRateEuro,
+            monthlyInterestRateEuroAdjustedWithTax,
             totalMonth
         );
 
@@ -68,13 +60,13 @@ function calculateSavings() {
         const monthlyPaymentEuro = PaymentEuro['monthlyPayment'];
         const totalPaymentEuro = PaymentEuro['totalPayment'];
 
-        var monthlySavings = (monthlyPaymentEuro - monthlyPaymentTaiwan - wireFee).toFixed(2)
-        var totalSavings = (monthlySavings * totalMonth).toFixed(2)
-        var monthlyPaymentEuroPlusWiring = (monthlyPaymentEuro + wireFee).toFixed(2)
-        var totalPaymentEuroPlusWiringFee = (totalPaymentEuro + wireFee * totalMonth).toFixed(2)
+        const monthlySavings = (monthlyPaymentEuro - monthlyPaymentTaiwan - wireFee).toFixed(2)
+        const totalSavings = (monthlySavings * totalMonth).toFixed(2)
+        const monthlyPaymentEuroPlusWiring = (monthlyPaymentEuro + wireFee).toFixed(2)
+        const totalPaymentEuroPlusWiringFee = (totalPaymentEuro + wireFee * totalMonth).toFixed(2)
 
-        document.getElementById('monthlySaving').innerHTML = monthlySavings + "Euro";
-        document.getElementById('totalSaving').innerHTML = totalSavings + "Euro";
+        document.getElementById('monthlySaving').innerHTML = monthlySavings + " Euro";
+        document.getElementById('totalSaving').innerHTML = totalSavings + " Euro";
         document.getElementById('monthlyPayment').innerHTML = monthlyPaymentEuroPlusWiring + " Euro";
         document.getElementById('totalPayment').innerHTML = totalPaymentEuroPlusWiringFee + " Euro";
     } else {
@@ -87,20 +79,27 @@ function calculateSavings() {
 
 function calculateProjection() {
 
-    var interestTaiwan = parseFloat(document.getElementById('interestTaiwan').value);
-    var interestEurope = parseFloat(document.getElementById('interestEurope').value);
-    var taxRateEurope = parseFloat(document.getElementById('taxRateEurope').value);
-    var interestEuropeAdjustedWithTax = interestEurope * (100 - taxRateEurope) * 0.01;
-    var loanAmountEuros = parseFloat(document.getElementById('loanAmountEuros').value);
-    var mortgageYears = parseInt(document.getElementById('mortgageYears').value);
-    var totalMonth = mortgageYears * 12;
-    var monthlyInterestRateTaiwan = interestTaiwan / 100 / 12
-    var monthlyInterestRateEuro = interestEuropeAdjustedWithTax / 100 / 12
-    var wireFee = parseInt(document.getElementById('wireFee').value);
-
+    // Get input values
+    const interestTaiwan = getInputValue(ELEMENT_ID['interestTaiwan'])
+    const interestEurope = getInputValue(ELEMENT_ID['interestEurope']);
+    const loanAmountEuros = getInputValue(ELEMENT_ID['loanAmountEuros']);
+    const mortgageYears = getInputValue(ELEMENT_ID['mortgageYears']);
+    const totalMonth = mortgageYears * 12;
+    const taxRateEurope = getInputValue(ELEMENT_ID['taxRateEurope']);
+    const interestEuropeAdjustedWithTax = interestEurope * (100 - taxRateEurope) * 0.01;
+    const monthlyInterestRateEuroAdjustedWithTax = interestEuropeAdjustedWithTax / 100 / 12;
+    const wireFee = getInputValue(ELEMENT_ID['wireFee']);
+    
     if (!isNaN(interestTaiwan) && !isNaN(interestEurope) && !isNaN(loanAmountEuros) && !isNaN(mortgageYears)) {
-        var monthlyPaymentEuro = (loanAmountEuros * monthlyInterestRateEuro) / (1 - Math.pow(1 + monthlyInterestRateEuro, -totalMonth));
-        var monthlyPaymentEuroPlusWiring = (monthlyPaymentEuro + wireFee).toFixed(2);
+           // Calculate total payment with European interest rate
+           const PaymentEuro = calculateMonthlyAndTotalPayment(
+            loanAmountEuros,
+            monthlyInterestRateEuroAdjustedWithTax,
+            totalMonth
+        );
+        
+        const monthlyPaymentEuro = PaymentEuro['monthlyPayment']
+        const monthlyPaymentEuroPlusWiring = (monthlyPaymentEuro + wireFee).toFixed(2);
 
         document.getElementById('firstExchangeRate').innerHTML = projectedLowExchangeRate[0].toFixed(2) + " - " + projectedHighExchangeRate[0].toFixed(2);
         document.getElementById('secondExchangeRate').innerHTML = projectedLowExchangeRate[1].toFixed(2) + " - " + projectedHighExchangeRate[1].toFixed(2);
